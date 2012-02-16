@@ -1,0 +1,15 @@
+  <!--?xml version="1.0" encoding="UTF-8"?-->
+
+	<project name="Ci-test" basedir="../">
+		<target name="checkout">
+		  <exec executable="git" dir="${basedir}/source">
+			<arg line="pull"></arg>
+		  </exec>
+		</target>
+		<target name="documentation">
+		  <exec dir="${basedir}" executable="docblox" failonerror="false">
+			<arg line="run -t ${basedir}/build/docblox" />
+		  </exec>
+		</target>
+		<target name="build" depends="checkout" />
+	</project>
