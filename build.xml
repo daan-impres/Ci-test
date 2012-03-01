@@ -22,7 +22,7 @@
     <target name="phpcs" description="">
         <exec executable="phpcs">
             <arg value="--standard=${basedir}/build/phpcs.xml" />
-            <arg path="${basedir}/src" />
+            <arg path="${basedir}" />
         </exec>
     </target>
 
