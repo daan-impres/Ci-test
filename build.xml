@@ -1,11 +1,4 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
-
-    <!--was voor cruisecontrol git checkout /clon / commit / whatever
-      <target name="checkout">
-      <exec executable="git" dir="${basedir}/source">
-            <arg line="pull"></arg>
-      </exec>
-    </target>-->
 <project name="test project" default="build" basedir="../">
 
     <target name="clean">
@@ -35,7 +28,7 @@
               ."/>
         </exec>
     </target>
-    
+   <--! 
     <target name="phpmd">
         <exec executable="phpmd">
             <arg path="${basedir}/source" />
@@ -45,7 +38,7 @@
             <arg value="${basedir}/build/logs/phpmd.xml" /> 
         </exec>
     </target>
-    
+   -->
     <target name="phpunit">
         <exec executable="phpunit" dir="${basedir}/source" failonerror="on">
             <arg line="--log-junit ${basedir}/build/logs/junit.xml
