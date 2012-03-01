@@ -16,8 +16,8 @@
     </target>
 
     <target name="phpcs" description="" depends="prepare">
-        <exec executable="phpcs">
-            <arg output="${basedir}/build/checkstyle.xml" />
+        <exec executable="phpcs"
+            output="${basedir}/build/checkstyle.xml" >
             <arg value="--standard=PEAR" />
             <arg path="${basedir}" />
         </exec>
