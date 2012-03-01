@@ -7,7 +7,6 @@
 
     <target name="prepare">
         <mkdir dir="${basedir}/build" />
-        <mkdir dir="${basedir}" />
         <mkdir dir="${basedir}/build/logs" />
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/docblox" />
@@ -22,7 +21,7 @@
 
     <target name="phpcs" description="">
         <exec executable="phpcs">
-            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--standard=PEAR" />
             <arg path="${basedir}" />
         </exec>
     </target>
