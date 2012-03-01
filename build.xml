@@ -1,5 +1,5 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
-<project name="test project" default="build" basedir="../">
+<project name="test project" default="build" >
 
     <target name="clean">
         <delete dir="${basedir}/build" />
@@ -11,22 +11,18 @@
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/docblox" />
         <mkdir dir="${basedir}/build/phpcb" />
-	<mkdir dir="${basedir}/build/codestyle" />
     </target>
 
     <target name="documentation">
       <exec dir="${basedir}/source" executable="docblox" failonerror="false">
-            <arg line="run -d ${basedir}/source -t ${basedir}/build/docblox" />
+            <arg line="run -d ${basedir} -t ${basedir}/build/docblox" />
       </exec>
     </target>
-    
-    <target name="phpcs">
-        <exec executable="phpcs" failonerror="false"
-              dir="${basedir}/build/codestyle/"
-              output="${basedir}/build/logs/checkstyle.xml">
-              <arg line="--report=checkstyle 
-                    --standard=PEAR 
-              ."/>
+
+    <target name="phpcs" description="">
+        <exec executable="phpcs">
+            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
