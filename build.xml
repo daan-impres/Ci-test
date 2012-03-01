@@ -25,5 +25,6 @@
             <arg path="${basedir}" />
         </exec>
     </target>
-    <target name="build" depends="phpcs,documentation" />
+
+    <target name="build" depends="clean,phpcs,documentation" />
 </project>
