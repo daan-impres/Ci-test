@@ -4,13 +4,13 @@
     <target name="clean">
         <delete dir="${basedir}/build" />
     </target>
-    
+
     <target name="prepare">
         <mkdir dir="${basedir}/build/logs" />
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/docblox" />
         <mkdir dir="${basedir}/build/phpcb" />
-        <mkdir dir="${basedir}/tests" />
+	<mkdir dir="${basedir}/build/codestyle" />
     </target>
 
     <target name="documentation">
@@ -21,13 +21,14 @@
     
     <target name="phpcs">
         <exec executable="phpcs" failonerror="false"
-              dir="${basedir}/source"
+              dir="${basedir}/build/codestyle/"
               output="${basedir}/build/logs/checkstyle.xml">
               <arg line="--report=checkstyle 
                     --standard=PEAR 
               ."/>
         </exec>
     </target>
+
     <target name="phpmd">
         <exec executable="phpmd">
             <arg path="${basedir}/source" />
