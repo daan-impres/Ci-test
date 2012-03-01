@@ -9,7 +9,7 @@
         <mkdir dir="${basedir}/api" />
     </target>
 
-    <target name="documentation" dephends="prepare">
+    <target name="documentation" depends="prepare">
       <exec dir="${basedir}" executable="docblox" failonerror="false">
             <arg line="run -d ${basedir} -t ${basedir}/api" />
       </exec>
