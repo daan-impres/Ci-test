@@ -6,16 +6,12 @@
     </target>
 
     <target name="prepare">
-        <mkdir dir="${basedir}/build" />
-        <mkdir dir="${basedir}/build/logs" />
-        <mkdir dir="${basedir}/build/coverage" />
-        <mkdir dir="${basedir}/build/docblox" />
-        <mkdir dir="${basedir}/build/phpcb" />
+        <mkdir dir="${basedir}/api" />
     </target>
 
-    <target name="documentation">
+    <target name="documentation" dephends="prepare">
       <exec dir="${basedir}" executable="docblox" failonerror="false">
-            <arg line="run -d ${basedir} -t ${basedir}/docblox" />
+            <arg line="run -d ${basedir} -t ${basedir}/api" />
       </exec>
     </target>
 
