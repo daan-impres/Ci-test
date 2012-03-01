@@ -6,7 +6,8 @@
     </target>
 
     <target name="prepare">
-	<mkdir dir="${basedir}/build" />
+        <mkdir dir="${basedir}/build" />
+        <mkdir dir="${basedir}/source" />
         <mkdir dir="${basedir}/build/logs" />
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/docblox" />
@@ -14,8 +15,8 @@
     </target>
 
     <target name="documentation">
-      <exec dir="${basedir}/source" executable="docblox" failonerror="false">
-            <arg line="run -d ${basedir} -t ${basedir}/build/docblox" />
+      <exec dir="${basedir}" executable="docblox" failonerror="false">
+            <arg line="run -d ${basedir} -t ${basedir}/docblox" />
       </exec>
     </target>
 
@@ -35,6 +36,7 @@
             <arg value="${basedir}/build/logs/phpmd.xml" /> 
         </exec>
     </target>
+
     <target name="phpunit">
         <exec executable="phpunit" dir="${basedir}/source" failonerror="on">
             <arg line="--log-junit ${basedir}/build/logs/junit.xml
@@ -42,6 +44,7 @@
                      --coverage-html ${basedir}/build/coverage" />
         </exec>
     </target>
+
     <target name="phpcb">
         <exec executable="phpcb">
             <arg value="--log" />
@@ -52,5 +55,6 @@
             <arg value="${basedir}/source" />
         </exec>
     </target>
+
     <target name="build" depends="phpcs,documentation" />
 </project>
