@@ -7,7 +7,7 @@
 
     <target name="prepare">
         <mkdir dir="${basedir}/build" />
-        <mkdir dir="${basedir}/source" />
+        <mkdir dir="${basedir}" />
         <mkdir dir="${basedir}/build/logs" />
         <mkdir dir="${basedir}/build/coverage" />
         <mkdir dir="${basedir}/build/docblox" />
@@ -26,35 +26,5 @@
             <arg path="${basedir}" />
         </exec>
     </target>
-
-    <target name="phpmd">
-        <exec executable="phpmd">
-            <arg path="${basedir}/source" />
-            <arg value="xml" />
-            <arg value="rule" />
-            <arg value="--reportfile" /> 
-            <arg value="${basedir}/build/logs/phpmd.xml" /> 
-        </exec>
-    </target>
-
-    <target name="phpunit">
-        <exec executable="phpunit" dir="${basedir}/source" failonerror="on">
-            <arg line="--log-junit ${basedir}/build/logs/junit.xml
-                     --coverage-clover  ${basedir}/build/logs/phpunit.coverage.xml
-                     --coverage-html ${basedir}/build/coverage" />
-        </exec>
-    </target>
-
-    <target name="phpcb">
-        <exec executable="phpcb">
-            <arg value="--log" />
-            <arg value="${basedir}/build" />
-            <arg value="--output" />
-            <arg value="${basedir}/build/phpcb" />
-            <arg value="--source" />
-            <arg value="${basedir}/source" />
-        </exec>
-    </target>
-
     <target name="build" depends="phpcs,documentation" />
 </project>
