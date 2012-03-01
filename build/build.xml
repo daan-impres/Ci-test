@@ -4,19 +4,19 @@
         <mkdir dir="${basedir}/api" />
     </target>
 
-    <target name="documentation" depends="prepare">
+    <target name="documentation">
       <exec dir="${basedir}" executable="docblox" failonerror="false">
             <arg line="run -d ${basedir} -t ${basedir}/api" />
       </exec>
     </target>
 
-    <target name="phpcs" description="" depends="prepare">
-        <exec executable="phpcs"
-            output="${basedir}/build/checkstyle.xml" >
+    <target name="phpcs" description="">
+        <exec executable="phpcs" >
+	    <arg line="--extenstions=php --ignore=build/* output="${basedir}/build/checkstyle.xml" />
             <arg value="--standard=PEAR" />
             <arg path="${basedir}" />
         </exec>
     </target>
 
-    <target name="build" depends="phpcs,documentation" />
+    <target name="build" depends="prepare,phpcs,documentation" />
 </project>
