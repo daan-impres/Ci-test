@@ -1,15 +1,69 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
-	
-<project name="Ci-test" basedir="../">
-	<target name="checkout">
-		 <exec executable="git" dir="${basedir}/source">
-			<arg line="pull"></arg>
-		  </exec>
-	</target>
-	<target name="documentation">
-		<exec dir="${basedir}" executable="docblox" failonerror="false">
-			<arg line="run -t ${basedir}/build/docblox" />
-		</exec>
-	</target>
-	<target name="build" depends="checkout" />
+
+    <!--was voor cruisecontrol git checkout /clon / commit / whatever
+      <target name="checkout">
+      <exec executable="git" dir="${basedir}/source">
+            <arg line="pull"></arg>
+      </exec>
+    </target>-->
+<project name="test project" default="build" basedir="../">
+
+    <target name="clean">
+        <delete dir="${basedir}/build" />
+    </target>
+    
+    <target name="prepare">
+        <mkdir dir="${basedir}/build/logs" />
+        <mkdir dir="${basedir}/build/coverage" />
+        <mkdir dir="${basedir}/build/docblox" />
+        <mkdir dir="${basedir}/build/phpcb" />
+        <mkdir dir="${basedir}/tests" />
+    </target>
+
+    <target name="documentation">
+      <exec dir="${basedir}/source" executable="docblox" failonerror="false">
+            <arg line="run -d ${basedir}/source -t ${basedir}/build/docblox" />
+      </exec>
+    </target>
+    
+    <target name="phpcs">
+        <exec executable="phpcs" failonerror="false"
+              dir="${basedir}/source"
+              output="${basedir}/build/logs/checkstyle.xml">
+              <arg line="--report=checkstyle 
+                    --standard=PEAR 
+              ."/>
+        </exec>
+    </target>
+    
+    <target name="phpmd">
+        <exec executable="phpmd">
+            <arg path="${basedir}/source" />
+            <arg value="xml" />
+            <arg value="rule" />
+            <arg value="--reportfile" /> 
+            <arg value="${basedir}/build/logs/phpmd.xml" /> 
+        </exec>
+    </target>
+    
+    <target name="phpunit">
+        <exec executable="phpunit" dir="${basedir}/source" failonerror="on">
+            <arg line="--log-junit ${basedir}/build/logs/junit.xml
+                     --coverage-clover  ${basedir}/build/logs/phpunit.coverage.xml
+                     --coverage-html ${basedir}/build/coverage" />
+        </exec>
+    </target>
+    
+    <target name="phpcb">
+        <exec executable="phpcb">
+            <arg value="--log" />
+            <arg value="${basedir}/build" />
+            <arg value="--output" />
+            <arg value="${basedir}/build/phpcb" />
+            <arg value="--source" />
+            <arg value="${basedir}/source" />
+        </exec>
+    </target>
+    
+    <target name="build" depends="phpcs,documentation,phpmd,phpcb" />
 </project>
