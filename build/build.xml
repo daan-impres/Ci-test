@@ -12,7 +12,7 @@
 
     <target name="phpcs" description="">
         <exec executable="phpcs" >
-	    <arg line="--extenstions=php --ignore=build/* output="${basedir}/build/checkstyle.xml" />
+	    <arg line="--extenstions=php --ignore=build/*" output="${basedir}/build/checkstyle.xml" />
             <arg value="--standard=PEAR" />
             <arg path="${basedir}" />
         </exec>
