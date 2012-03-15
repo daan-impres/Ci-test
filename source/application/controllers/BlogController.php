@@ -58,6 +58,33 @@ class BlogController extends Zend_Controller_Action
         }
         $this->view->form = $form;
     }
+    /**
+     * copy pasta van de methode hierboven
+	 * met als hoofdreden het testen van phpcpd 
+     *
+     * @return void
+     */
+    public function addcpdAction()
+    {
+        $form = new Application_Form_Blog();
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost();
+            if ($form->isValid($data)) {
+                $data = array(
+                    'title' => $data['title'],
+                    'text' => $data['text'],
+                    'date_created' => new Zend_Db_Expr('NOW()'),
+                );
+
+                $blogModel = new Application_Model_DbTable_Blog();            
+                $blogModel->save($data);
+
+                $this->_redirect('blog');
+            }
+        }
+        $this->view->form = $form;
+    }
+
 
     /**
      * Edit an blog with the newly given user data
