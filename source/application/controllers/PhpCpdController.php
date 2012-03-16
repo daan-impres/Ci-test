@@ -2,7 +2,7 @@
 /**
 	ff aanpassing voor gitpush/pull test in jenkins
 **/
-class BlogController extends Zend_Controller_Action 
+class PhpCpdController extends Zend_Controller_Action 
 {
     /**
      * index action fetches all available blogs from the database
