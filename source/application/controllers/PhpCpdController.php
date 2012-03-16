@@ -1,5 +1,7 @@
 <?php
-
+/**
+	ff aanpassing voor gitpush/pull test in jenkins
+**/
 class BlogController extends Zend_Controller_Action 
 {
     /**
