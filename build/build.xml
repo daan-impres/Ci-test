@@ -18,7 +18,7 @@
 
     <target name="docblox">
         <docblox title="Api docs" destdir="api">
-            <fileset dir="../source/application">
+            <fileset dir="source/application">
                 <include name="**/*.php" />
             </fileset>
         </docblox>
