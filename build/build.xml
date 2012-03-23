@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Ci-test" default="build" basedir="workspace">
+<project name="Ci-test" default="build" basedir="../">
 
     <target name="clean">
         <delete dir="build/log" />
