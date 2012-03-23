@@ -8,19 +8,26 @@ class BlogControllerTest extends ControllerTestCase
      *
      * @return void
      */
-    public function testDetailActionParam()
+    public function testDetailAction()
     {
         $this->getRequest()
             ->setParams(array('id' => '1'))
             ->setMethod('GET');
+        $this->disPatch('/blog/detail/');
 
-        $this->disPatch('/');
+        echo $this->getResponse()->getBody();
+
         $this->assertResponseCode(200);
     }     
 
-    public function testCanCreateBlogItem()
-    {}
-
-    public function tearDown()
-    {}
+    /**
+     * Checks if the index page can be loaded
+     *
+     * @return void
+     */
+    public function testIndexAction()
+    {
+        //$this->disPatch('/blog/');
+        //$this->assertResponseCode(200);
+    }
 }

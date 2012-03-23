@@ -1,4 +1,5 @@
 <?php
+// This file bootstraps the application with the testing application environment
 
 // Define path to application directory
 defined('APPLICATION_PATH')
@@ -14,5 +15,4 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
-/** Zend_Application */
 require_once 'controllers/ControllerTestCase.php';
