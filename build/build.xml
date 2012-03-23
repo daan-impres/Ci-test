@@ -18,7 +18,7 @@
 
     <target name="docblox">
         <docblox title="Api docs" destdir="api">
-            <fileset dir="source/application">
+            <fileset dir="../source/application">
                 <include name="**/*.php" />
             </fileset>
         </docblox>
@@ -27,14 +27,14 @@
     <target name="codesniffer">
         <phpcodesniffer
             standard="PEAR"
-            file="source/application">
+            file="../source/application">
             <formatter type="checkstyle" outfile="build/log/checkstyle.xml"/>
         </phpcodesniffer>
     </target>
 
     <target name="phpcpd">
     <phpcpd>
-        <fileset dir="source/application">
+        <fileset dir="../source/application">
             <include name="**/*.php" />
         </fileset>
         <formatter type="pmd" outfile="build/log/pmd-cpd.xml"/>
@@ -42,7 +42,7 @@
     </target>
 
     <target name="phpmd">
-        <phpmd file="source/application"
+        <phpmd file="../source/application"
             rulesets="rule">
             <formatter type="xml" outfile="build/log/pmd.xml" />
         </phpmd>
@@ -50,7 +50,7 @@
 
     <target name="phpdepend">
         <phpdepend>
-            <fileset dir="source/application">
+            <fileset dir="../source/application">
                 <include name="**/*.php"/>
             </fileset>
             <logger type="jdepend-xml" outfile="build/log/jdepend.xml" />
@@ -72,14 +72,14 @@
             <arg value="--log" />
             <arg path="build/log" />
             <arg value="--source" />
-            <arg path="source/application" />
+            <arg path="../source/application" />
             <arg value="--output" />
             <arg path="build/log/code-browser" />
         </exec>
     </target>
 
     <target name="phpunit">
-        <exec executable="phpunit" dir="source/tests">
+        <exec executable="phpunit" dir="../source/tests">
         </exec>
         <!--<phpunit>
         <formatter todir="build/log/phpunit" type="xml"/>
