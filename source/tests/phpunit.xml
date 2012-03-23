@@ -7,13 +7,13 @@
 			<directory suffix=".php">../application</directory>
 			<exclude>
                 <directory suffix=".phtml">../application</directory>
+                <directory>../application/models/DbTable/</directory>
 			</exclude>
 		</whitelist>
 	</filter>
+	
 	<logging>
-		<log type="coverage-xml" target="../../build/log/clover.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="junit" target="../../build/log/junit.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
 		<log type="coverage-html" target="../../build/log/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="testdox" target="../../build/log/phpunit/testdox.html" />
+		<log type="testdox" target="../../blog/build/phpunit/testdox.html" />
 	</logging>
 </phpunit>
