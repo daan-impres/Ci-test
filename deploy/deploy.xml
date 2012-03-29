@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Ci-test" default="build" basedir="../">
+
+    <!-- Include the properties file -->
+    <property file="build/build.properties" />
+
+    <tstamp />
+
+    <!-- database task should be moved to seperate XML phingcall to call the file -->
+    <target name="dbprepare">
+	<echo msg="Preparing database" />
+        <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
+            <fileset dir="deploy/sql/prepare/">
+              <include name="*.sql"/>
+            </fileset>
+        </pdosqlexec>
+	<echo msg="Done preparing the database" />
+    </target>
+
+    <!-- create our migration task -->
+    <target name="dbmigrate" description="Database Migrations">
+        <echo msg="Running database migrations..." />
+
+        <!-- these two filenames will contain the generated SQL to do the deploy and roll it back-->
+        <property name="build.dbdeploy.deployfile" value="deploy-${DSTAMP}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="undo-${DSTAMP}${TSTAMP}.sql" />
+
+        <!-- generate the deployment scripts -->
+        <dbdeploy
+            url="${db.driver}:host=${db.host};dbname=${db.name}"
+            userid="${db.user}"
+            password="${db.pass}"
+            checkall="true"
+            dir="deploy/sql/deltas"
+            outputfile="deploy/sql/scripts/${build.dbdeploy.deployfile}"
+            undooutputfile="deploy/sql/scripts/${build.dbdeploy.undofile}" />
+
+        <!-- insert the deployment scripts -->
+        <echo msg="migrating new sql" />
+        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}">
+            <fileset dir="deploy/sql/scripts/">
+                <include name="deploy-${DSTAMP}${TSTAMP}.sql" />
+            </fileset>
+        </pdosqlexec>
+    </target>
+
+    <!-- minify javascript -->
+    <target name="jsmin">
+	<echo msg="Minifying javascript files" />
+        <jsMin targetDir="source" failOnError="false" suffix="">
+          <fileset dir="source">
+            <include name="**/*.js"/>
+          </fileset>
+        </jsMin>
+	<echo msg="Done minifying javascript files" />
+    </target>
+
+    <!-- prepare the source for copying to the server -->
+    <target name="tar">
+	<echo msg="Creating archive of the source and the deploy directory" />
+        <tar basedir="source" destfile="source-${project.name}-${DSTAMP}${TSTAMP}.tar" compression="bzip2" longfile="fail" />
+	<echo msg="Done creating archive" />
+    </target>
+
+    <!-- deploy task for database prepare and migrate -->
+    <target name="dbdeploy" depends="dbprepare, dbmigrate" />
+
+    <!-- deploy task to deploy the whole application -->
+    <target name="deploy" depends="dbdeploy, jsmin, tar" />    
+</project>
