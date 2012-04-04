@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Require dependencies
+ * Require dependencies for the script to run correctly
  */
 require_once 'Zend/Application.php';
 require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
