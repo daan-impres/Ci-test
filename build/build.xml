@@ -87,7 +87,7 @@
 
     <!-- PHPUnit task run unit tests (binary is called phpunit34 because an older version is required for Zend Framework) -->
     <target name="phpunit">
-        <exec executable="phpunit34" dir="source/tests">
+        <exec executable="phpunit34" dir="source/tests" passthru="true" >
 			<arg value="--verbose" /> 
         </exec>
     </target>
