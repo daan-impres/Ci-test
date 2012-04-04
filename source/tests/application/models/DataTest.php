@@ -29,6 +29,7 @@ class Model_DataTest extends ControllerTestCase
      */
     public function testcanAddItem()
     {
+        $this->_data->clearItems();
         $this->_data->addItem('test');
 
         $items = $this->_data->getItems();
