@@ -26,8 +26,5 @@ class BlogControllerTest extends ControllerTestCase
      * @return void
      */
     public function testIndexAction()
-    {
-        //$this->disPatch('/blog/');
-        //$this->assertResponseCode(200);
-    }
+    {}
 }

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Require dependencies
+ */
 require_once 'Zend/Application.php';
 require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
 
@@ -9,6 +12,11 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 	 */
 	protected $application;
 
+    /**
+     * Set up the application so it is runnable
+     * 
+     * @return void
+     */
     public function setUp()
     {
         $this->application = new Zend_Application(
@@ -20,6 +28,11 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
         parent::setUp();
     }
 
+    /**
+     * Bootstrap the application
+     *
+     * @return void
+     */
     public function appBootstrap()
     {
         $this->application->bootstrap();
