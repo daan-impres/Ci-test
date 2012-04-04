@@ -13,9 +13,9 @@
 	</filter>
 	
 	<logging>
-         <log type="coverage-xml" target="../../build/log/clover.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="coverage-clover" target="../../log/build/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="coverage-html" target="../../log/build/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="testdox" target="../../blog/build/phpunit/testdox.html" />
+         <log type="coverage-xml" target="../../build/log/phpunit/clover.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+		<log type="coverage-clover" target="../../build/log/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+		<log type="coverage-html" target="../../build/log/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+		<log type="testdox" target="../../build/log/phpunit/testdox.html" />
 	</logging>
 </phpunit>
