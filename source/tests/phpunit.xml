@@ -4,18 +4,18 @@
 	</testsuite>	
 	<filter>
 		<whitelist>
-			<directory suffix=".php">../../application</directory>
+			<directory suffix=".php">../application</directory>
 			<exclude>
-                <directory suffix=".phtml">../../application</directory>
-                <directory>../../application/models/DbTable/</directory>
+                <directory suffix=".phtml">../application</directory>
+                <directory>../application/models/DbTable/</directory>
 			</exclude>
 		</whitelist>
 	</filter>
 	
 	<logging>
-         <log type="coverage-xml" target="../../build/log/phpunit/clover.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="coverage-clover" target="../../build/log/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
-		<log type="coverage-html" target="../../build/log/phpunit/report" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+         <log type="coverage-xml" target="../../build/log/phpunit/phpunit.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+		<log type="coverage-clover" target="../../build/log/phpunit/clover.xml" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
+		<log type="coverage-html" target="../../build/log/phpunit/phpunit.html" charset="UTF-8" yui="true" highlight="true" lowUpperBound="50"  highLowerBound="80" />
 		<log type="testdox" target="../../build/log/phpunit/testdox.html" />
 	</logging>
 </phpunit>
