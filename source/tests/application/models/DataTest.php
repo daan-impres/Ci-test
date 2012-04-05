@@ -1,9 +1,13 @@
 <?php
+
 /**
  * Require the model which needs testing
  */
 require_once APPLICATION_PATH .'/models/Data.php';
 
+/**
+ * The class extends the ControllerTestCase since the appication needs to be run
+ */
 class Model_DataTest extends ControllerTestCase
 {
     /**

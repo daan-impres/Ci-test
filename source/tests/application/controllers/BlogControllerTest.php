@@ -11,11 +11,9 @@ class BlogControllerTest extends ControllerTestCase
     public function testDetailAction()
     {
         $this->getRequest()
-            ->setParams(array('id' => '1'))
+            ->setParams(array('id' => '2'))
             ->setMethod('GET');
         $this->disPatch('/blog/detail/');
-
-        echo $this->getResponse()->getBody();
 
         $this->assertResponseCode(200);
     }     
