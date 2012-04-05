@@ -4,10 +4,10 @@
 	</testsuite>	
 	<filter>
 		<whitelist>
-			<directory suffix=".php">../application</directory>
+			<directory suffix=".php">../../application</directory>
 			<exclude>
-                <directory suffix=".phtml">../application</directory>
-                <directory>../application/models/DbTable/</directory>
+                <directory suffix=".phtml">../../application</directory>
+                <directory>../../application/models/DbTable/</directory>
 			</exclude>
 		</whitelist>
 	</filter>
