@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <blog id="1" 
+        text="system needs electricity to run"
+        date_created="2007-04-01" 
+        title="Woei!" />
+
+    <blog id="2" 
+        text="blaat"
+        date_created="2007-04-01" 
+        title="Woei!" />
+
+    <blog id="3" 
+        text="one plus one usually equals 2 "
+        date_created="2007-04-01" 
+        title="Woei!" />
+</dataset>
