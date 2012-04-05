@@ -91,5 +91,5 @@
         </exec>
     </target>
 
-    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, phpunit" />
+    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb" />
 </project>
