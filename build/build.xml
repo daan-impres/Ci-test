@@ -131,10 +131,8 @@
 
         <!-- insert the deployment scripts -->
         <echo msg="migrating new sql" />
-        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}">
-            <fileset dir="deploy/sql/scripts/">
-                <include name="deploy-${DSTAMP}${TSTAMP}.sql" />
-            </fileset>
+        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" 
+					password="${db.pass}" src="deploy/sql/scripts/deploy-${DSTAMP}${TSTAMP}.sql">
         </pdosqlexec>
     </target>
 		
