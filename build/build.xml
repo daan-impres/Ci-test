@@ -88,14 +88,11 @@
 	<target name="app-ini">
 		<property name="testing.db.username" value="This is a text file" />
 
-			<copy file="source/application/configs/application.ini">
+			<copy file="source/application/configs/application.ini.example" 
+				  tofile="source/application/configs/application.ini" overwrite="true">
 			  <filterchain>
 				<expandproperties />
 			  </filterchain>
-
-			  <fileset dir="">
-				<include name="source/application/configs/application.ini.example" />
-			  </fileset>
 			</copy>
 					
 		<echo msg="wir haben jezt deinen application.ini gemacht fur sie.(das ist fur phpunit)" />
