@@ -14,7 +14,7 @@ resources.layout.layoutPath = APPLICATION_PATH "/layouts/scripts/"
 resources.db.adapter = PDO_MYSQL
 resources.db.params.host = ${production.db.host}
 resources.db.params.username = ${production.db.username}
-resources.db.params.password = ${production.db.password}
+resources.db.params.password = "${production.db.password}"
 resources.db.params.dbname = ${production.db.dbname}
 resources.db.params.charset = "UTF8"
 resources.db.isDefaultTableAdapter = true
@@ -29,7 +29,7 @@ phpSettings.display_errors = 1
 resources.db.adapter = PDO_MYSQL
 resources.db.params.host = ${testing.db.host}
 resources.db.params.username = ${testing.db.username}
-resources.db.params.password = ${testing.db.password}
+resources.db.params.password = "${testing.db.password}"
 resources.db.params.dbname = ${testing.db.dbname}
 
 
