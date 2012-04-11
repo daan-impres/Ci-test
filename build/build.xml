@@ -86,7 +86,10 @@
 
 	<!-- making an application.ini -->
 	<target name="app-ini">
-		<property name="testing.db.username" value="This is a text file" />
+		<property name="testing.db.host" value="${db.host}" />
+		<property name="testing.db.username" value="${db.user}" />
+		<property name="testing.db.password" value="${db.pass}" />
+		<property name="testing.db.dbname" value="${db.name}" />
 
 			<copy file="source/application/configs/application.ini.example" 
 				  tofile="source/application/configs/application.ini" overwrite="true">
