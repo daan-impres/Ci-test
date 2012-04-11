@@ -85,8 +85,8 @@
         </exec>
     </target>
 	<!-- DBmigrate for the PHPUnit task -->
-	<target name="dbmigrate">
-		<phingcalltask />
+	<target name="dbdeploy">
+		<phing phingfile="deploy/migrate.xml" inheritRefs="true" target="dbdeploy" />
 	</target>
 	
     <!-- PHPUnit task run unit tests (binary is called phpunit34 because an older version is required for Zend Framework) -->
@@ -95,5 +95,5 @@
         </exec>
     </target>
 
-    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbmigrate, phpunit" /> 
+    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, phpunit" /> 
 </project>

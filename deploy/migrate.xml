@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="test" default="check-property" basedir="../">
+<project name="test" default="dbdeploy" basedir="../">
 
 	<target name="configure">    
-    <property file="build.properties" />
+    <property file="../build.properties" />
         <tstamp />
     </target>
 
