@@ -83,6 +83,23 @@
             <arg path="build/log/code-browser" />
         </exec>
     </target>
+
+	<!-- making an application.ini -->
+	<target name="app-ini">
+		<property name="testing.db.username" value="This is a text file" />
+
+			<copy todir="source/application/configs/application.ini">
+			  <filterchain>
+				<expandproperties />
+			  </filterchain>
+
+			  <fileset dir=".">
+				<include name="source/application/configs/application.ini.example" />
+			  </fileset>
+			</copy>
+					
+		<echo msg="wir haben jezt deinen application.ini gemacht fur sie.(das ist fur phpunit)" />
+	</target>
 	<!-- DBmigrate for the PHPUnit task -->
 	<target name="dbprepare">
 	<echo msg="Preparing database" />
@@ -128,6 +145,6 @@
         </exec>
     </target>
 	
-    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, phpunit" /> 
+    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit" /> 
 	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
