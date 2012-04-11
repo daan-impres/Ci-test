@@ -1,1 +1,1 @@
-DROP DATABASE IF EXISTS `dbmigrate`;
+DROP DATABASE IF EXISTS `${db.name}`;
