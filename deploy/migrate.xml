@@ -4,10 +4,10 @@
 	<target name="configure">    
     <property file="../build.properties" />
         <tstamp />
-		<echo message="${db.driver}">
-		<echo message="${db.user}">
-		<echo message="${db.pass}">
-		<echo message="${db.host}">
+		<echo message="${db.driver}" />
+		<echo message="${db.user}" />
+		<echo message="${db.pass}" />
+		<echo message="${db.host}" />
     </target>
 	
 	
