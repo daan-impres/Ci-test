@@ -146,7 +146,7 @@
     </target>
 	
 	<target name="post-cleanup">
-	    <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}" file="deply/sql/scripts/cleanup.sql" >
+	    <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}" src="deply/sql/scripts/cleanup.sql" >
         </pdosqlexec>	
 		<echo message="Cleared the database" />
 		<delete file="source/application/configs/application.ini" />
