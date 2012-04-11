@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test" default="check-property" basedir="../">
+
+	<target name="configure">    
+    <property file="build.properties" />
+        <tstamp />
+    </target>
+
+    <!-- database task should be moved to seperate XML phingcall to call the file -->
+    <target name="dbprepare">
+	<echo msg="Preparing database" />
+        <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
+            <fileset dir="deploy/sql/prepare/">
+              <include name="*.sql"/>
+            </fileset>
+        </pdosqlexec>
+	<echo msg="Done preparing the database" />
+    </target>
+
+    <!-- create our migration task -->
+    <target name="dbmigrate" description="Database Migrations">
+        <echo msg="Running database migrations..." />
+
+        <!-- these two filenames will contain the generated SQL to do the deploy and roll it back-->
+        <property name="build.dbdeploy.deployfile" value="deploy-${DSTAMP}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="undo-${DSTAMP}${TSTAMP}.sql" />
+
+        <!-- generate the deployment scripts -->
+        <dbdeploy
+            url="${db.driver}:host=${db.host};dbname=${db.name}"
+            userid="${db.user}"
+            password="${db.pass}"
+            checkall="true"
+            dir="deploy/sql/deltas"
+            outputfile="deploy/sql/scripts/${build.dbdeploy.deployfile}"
+            undooutputfile="deploy/sql/scripts/${build.dbdeploy.undofile}" />
+
+        <!-- insert the deployment scripts -->
+        <echo msg="migrating new sql" />
+        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}">
+            <fileset dir="deploy/sql/scripts/">
+                <include name="deploy-${DSTAMP}${TSTAMP}.sql" />
+            </fileset>
+        </pdosqlexec>
+    </target>
+	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
+
+</project>
