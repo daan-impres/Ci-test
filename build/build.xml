@@ -145,6 +145,15 @@
         </exec>
     </target>
 	
-    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit" /> 
+	<target name="post-cleanup">
+	    <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}">
+            <fileset dir="deploy/sql/">
+                <include name="cleanup.sql" />
+            </fileset>
+        </pdosqlexec>	
+		<echo message="Cleared the database" />
+		<delete file="source/application/configs/application.ini" />
+	</target>
+    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit, post-cleanup" /> 
 	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
