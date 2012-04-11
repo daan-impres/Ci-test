@@ -88,12 +88,12 @@
 	<target name="app-ini">
 		<property name="testing.db.username" value="This is a text file" />
 
-			<copy todir="source/application/configs/">
+			<copy file="source/application/configs/application.ini">
 			  <filterchain>
 				<expandproperties />
 			  </filterchain>
 
-			  <fileset dir=".">
+			  <fileset dir="">
 				<include name="source/application/configs/application.ini.example" />
 			  </fileset>
 			</copy>
