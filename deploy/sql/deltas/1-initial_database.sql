@@ -6,6 +6,10 @@ CREATE TABLE `blog` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ INSERT INTO `blog` VALUES ('','Hello world','Hello world',NOW());
+ INSERT INTO `blog` VALUES ('','Hello everyone','Hello everyone',NOW());
+ INSERT INTO `blog` VALUES ('','Hello all','Hello all',NOW());
+
 --//@UNDO 
 DROP TABLE IF EXISTS `blog`;
 --//
