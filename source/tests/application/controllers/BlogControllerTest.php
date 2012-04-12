@@ -1,7 +1,30 @@
 <?php
 
+require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
+
 class BlogControllerTest extends ControllerTestCase 
 {
+
+    /**
+     * Loads some data within the database so the tests can actually be completed
+     * 
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $connection = $this->getConnection();
+
+        $databaseTester = new Zend_Test_PHPUnit_Db_SimpleTester($connection);
+ 
+        $databaseFixture = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(
+            dirname(dirname(dirname(__FILE__))) .'/files/blogSeed.xml' 
+        );
+ 
+        $databaseTester->setupDatabase($databaseFixture);
+    }
 
     /**
      * Checks if the index page can be loaded
@@ -147,4 +170,3 @@ class BlogControllerTest extends ControllerTestCase
         $this->assertQuery('h1', 'Blog toevoegen');  
     }
 }
-
