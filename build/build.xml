@@ -143,7 +143,13 @@
         </pdosqlexec>	
 		<echo message="Cleared the database" />
 		<delete file="source/application/configs/application.ini" />
-	</target>
+		<delete>
+			<fileset dir="deploy/sql/scripts" />
+				<include name="undo*.sql" />
+				<include name="deploy*.sql" />
+			</fileset>
+		</delete>
+	<:target>
     <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit, post-cleanup" /> 
 	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
