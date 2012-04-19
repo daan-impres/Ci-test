@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Ci-test" default="build" basedir="../">
-    <!-- Clean old build output -->
-    <target name="clean">
-        <delete dir="build/log" />
-        <delete dir="api" />
-    </target>
-
-    <!-- Preparation create required directories -->
+ 
+ 	<!-- Preparation create required directories -->
     <target name="prepare">
         <echo msg="Making directory build" />
         <mkdir dir="build" />
@@ -149,6 +144,6 @@
 		<echo message="Cleared the database" />
 		<delete file="source/application/configs/application.ini" />
 	</target>
-    <target name="build" depends="clean, prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit, post-cleanup" /> 
+    <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit, post-cleanup" /> 
 	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
