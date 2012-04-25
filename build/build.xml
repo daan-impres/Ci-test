@@ -12,7 +12,6 @@
         <mkdir dir="api" />
 	
 	<echo message="${env.GIT_BRANCH}" /> 
-	<echo message="${GIT_BRANCH}" /> 
     </target>
 	<!-- Call build.properties for ci server db migration -->
 	<target name="configure">    
