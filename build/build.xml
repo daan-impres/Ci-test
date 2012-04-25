@@ -9,7 +9,10 @@
         <mkdir dir="build/log" />
         <mkdir dir="build/log/code-browser" />
         <mkdir dir="build/log/phpunit" />
-        <mkdir dir="api" />
+        <mkdir dir="api" />'
+	
+	<echo message="${env.GIT_BRANCH}" /> 
+	<echo message="${GIT_BRANCH}" /> 
     </target>
 	<!-- Call build.properties for ci server db migration -->
 	<target name="configure">    
