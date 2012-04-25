@@ -1,21 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project name="test" default="deploy" basedir="">
 
-<project name="Ci-test" default="build" basedir="../">
+    <target name="untar">
+        <mkdir dir="untar" />
+        <exec command="tar -xvf deploy.tar -C ./untar" />
+    </target>
 
-    <!-- Include the properties file -->
-    <property file="build/build.properties" />
+   <target name="pre-clean">
+        <property file="untar/deploy.properties" />
+        <tstamp />
+        <delete quiet="true" includeemptydirs="true">
+            <fileset dir="./">
+                <include name="${serv.environment}" />
+            </fileset>
+        </delete>
+        <delete quiet="true" file=".htaccess" />
+        <delete quiet="true" dir="${serv.environment}sql/" />
+        <mkdir dir="${serv.environment}" />   
+        <mkdir dir="${serv.environment}sql" />   
+    </target>
+  
+    <target name="htaccess">
+        <property name="domain-name" value="${domain.name}" />
+        <copy file="untar/root-htaccess"
+              tofile=".htaccess" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+    
+    <target name="app-ini">
+        <property name="production.db.host" value="${db.host}" />
+        <property name="production.db.username" value="${db.user}" />
+        <property name="production.db.password" value="${db.password}" />
+        <property name="production.db.dbname" value="${db.name}" />
+        <property name="testing.db.host" value="" />
+        <property name="testing.db.username" value="" />
+        <property name="testing.db.password" value="" />
+        <property name="testing.db.dbname" value="" />
+            <copy file="untar/source/application/configs/application.ini.example" 
+                  tofile="untar/source/application/configs/application.ini" overwrite="true">
+              <filterchain>
+                <expandproperties />
+              </filterchain>
+            </copy>
+    </target>    
+  
+    <target name="copy" > 
+        <exec command="cp -rf untar/source/* ${serv.environment}" />
+    </target>
 
-    <tstamp />
 
-    <!-- database task should be moved to seperate XML phingcall to call the file -->
+    <target name="chmod">
+        <echo message="chmodding" />
+    </target>
+   
     <target name="dbprepare">
-	<echo msg="Preparing database" />
-        <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
-            <fileset dir="deploy/sql/prepare/">
+        <echo msg="Preparing database" />
+        <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.password}">
+            <fileset dir="untar/deploy/sql/prepare/">
               <include name="*.sql"/>
             </fileset>
         </pdosqlexec>
-	<echo msg="Done preparing the database" />
+        <echo msg="Done preparing the database" />
     </target>
 
     <!-- create our migration task -->
@@ -30,42 +78,27 @@
         <dbdeploy
             url="${db.driver}:host=${db.host};dbname=${db.name}"
             userid="${db.user}"
-            password="${db.pass}"
+            password="${db.password}"
             checkall="true"
-            dir="deploy/sql/deltas"
-            outputfile="deploy/sql/scripts/${build.dbdeploy.deployfile}"
-            undooutputfile="deploy/sql/scripts/${build.dbdeploy.undofile}" />
+            dir="untar/deploy/sql/deltas"
+            outputfile="${serv.environment}sql/${build.dbdeploy.deployfile}"
+            undooutputfile="${serv.environment}sql/${build.dbdeploy.undofile}" />
 
         <!-- insert the deployment scripts -->
         <echo msg="migrating new sql" />
-        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}">
-            <fileset dir="deploy/sql/scripts/">
-                <include name="deploy-${DSTAMP}${TSTAMP}.sql" />
+        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
+            <fileset dir="${serv.environment}sql/">
+                <include name="deploy-*.sql" />
             </fileset>
         </pdosqlexec>
     </target>
-
-    <!-- minify javascript -->
-    <target name="jsmin">
-	<echo msg="Minifying javascript files" />
-        <jsMin targetDir="source" failOnError="false" suffix="">
-          <fileset dir="source">
-            <include name="**/*.js"/>
-          </fileset>
-        </jsMin>
-	<echo msg="Done minifying javascript files" />
+    
+    <target name="clear">
+        <echo message="clearing" />
+        <delete dir="untar/" />
+        <delete file="deploy.tar/" />
+        <delete file="yaymigrate.xml" />
     </target>
-
-    <!-- prepare the source for copying to the server -->
-    <target name="tar">
-	<echo msg="Creating archive of the source and the deploy directory" />
-        <tar basedir="source" destfile="source-${project.name}-${DSTAMP}${TSTAMP}.tar" compression="bzip2" longfile="fail" />
-	<echo msg="Done creating archive" />
-    </target>
-
-    <!-- deploy task for database prepare and migrate -->
-    <target name="dbdeploy" depends="dbprepare, dbmigrate" />
-
-    <!-- deploy task to deploy the whole application -->
-    <target name="deploy" depends="dbdeploy, jsmin, tar" />    
+    
+	<target name="deploy" depends="untar, pre-clean, htaccess, app-ini, copy, chmod, dbprepare ,dbmigrate, clear" />
 </project>
