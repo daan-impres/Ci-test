@@ -143,7 +143,7 @@
 		<echo message="Cleared the database" />
 		<delete file="source/application/configs/application.ini" />
 		<delete>
-			<fileset dir="deploy/sql/scripts" />
+			<fileset dir="deploy/sql/scripts">
 				<include name="undo*.sql" />
 				<include name="deploy*.sql" />
 			</fileset>
