@@ -19,17 +19,7 @@
         <mkdir dir="${serv.environment}" />   
         <mkdir dir="${serv.environment}sql" />   
     </target>
-  
-    <target name="htaccess">
-        <property name="domain-name" value="${domain.name}" />
-        <copy file="untar/root-htaccess"
-              tofile=".htaccess" overwrite="true">
-            <filterchain>
-                <expandproperties />
-            </filterchain>
-        </copy>
-    </target>
-    
+     
     <target name="app-ini">
         <property name="production.db.host" value="${db.host}" />
         <property name="production.db.username" value="${db.user}" />
@@ -50,7 +40,23 @@
     <target name="copy" > 
         <exec command="cp -rf untar/source/* ${serv.environment}" />
     </target>
-
+	
+	<target name="htaccess">
+        <property name="domain-name" value="${domain.name}" />
+        <copy file="untar/root-htaccess"
+              tofile=".htaccess" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+		<copy file="untar/public-htaccess"
+			  tofile="${serv.environment}/public/.htaccess">
+		     <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+	
 
     <target name="chmod">
         <echo message="chmodding" />
@@ -100,5 +106,5 @@
         <delete file="yaymigrate.xml" />
     </target>
     
-	<target name="deploy" depends="untar, pre-clean, htaccess, app-ini, copy, chmod, dbprepare ,dbmigrate, clear" />
+	<target name="deploy" depends="untar, pre-clean, app-ini, copy, htaccess, chmod, dbprepare ,dbmigrate, clear" />
 </project>
