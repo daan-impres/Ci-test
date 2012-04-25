@@ -50,7 +50,7 @@
             </filterchain>
         </copy>
 		<copy file="untar/public-htaccess"
-			  tofile="${serv.environment}/public/.htaccess">
+			  tofile="${serv.environment}/public/.htaccess" overwrite="true">
 		     <filterchain>
                 <expandproperties />
             </filterchain>
