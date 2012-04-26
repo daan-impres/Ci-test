@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="test" default="deploy" basedir="">
+<project name="deploy" default="deploy" basedir="">
 
     <target name="untar">
         <mkdir dir="untar" />
