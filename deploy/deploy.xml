@@ -38,7 +38,7 @@
     </target>    
   
     <target name="copy" > 
-        <exec command="cp -rf untar/source/* ${serv.environment}" />
+        <exec command="c -rf untar/source/* ${serv.environment}" />
     </target>
 	
 	<target name="htaccess">
