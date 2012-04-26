@@ -3,7 +3,7 @@
 
     <target name="untar">
         <mkdir dir="untar" />
-        <exec command=" -xvf deploy.tar -C ./untar" checkreturn="true" />
+        <exec command="tar -xvf deploy.tar -C ./untar" checkreturn="true" />
     </target>
 
    <target name="pre-clean">
@@ -38,7 +38,7 @@
     </target>    
   
     <target name="copy" > 
-        <exec command="cp -rf untar/source/* ${serv.environment}" />
+        <exec command="cp -rf untar/source/* ${serv.environment}" checkreturn="true"/>
     </target>
 	
 	<target name="htaccess">
