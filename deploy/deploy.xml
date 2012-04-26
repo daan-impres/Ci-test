@@ -103,7 +103,7 @@
         <echo message="clearing" />
         <delete dir="untar/" />
         <delete file="deploy.tar/" />
-        <delete file="yaymigrate.xml" />
+        <delete file="deploy.xml" />
     </target>
     
 	<target name="deploy" depends="untar, pre-clean, app-ini, copy, htaccess, chmod, dbprepare ,dbmigrate, clear" />
