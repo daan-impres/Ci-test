@@ -3,7 +3,7 @@
 
     <target name="untar">
         <mkdir dir="untar" />
-        <exec command=" -xvf deploy.tar -C ./untar" />
+        <exec command=" -xvf deploy.tar -C ./untar" checkreturn="true" />
     </target>
 
    <target name="pre-clean">
