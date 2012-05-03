@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="deploy" default="deploy" basedir="">
 
+    <!-- timestamp for db migration tasks -->
+    <tstamp />
+
     <target name="untar">
         <mkdir dir="untar" />
         <exec command="tar -xvf deploy.tar -C ./untar" checkreturn="true" />
@@ -8,7 +11,6 @@
 
    <target name="pre-clean">
         <property file="untar/deploy.properties" />
-        <tstamp />
         <delete quiet="true" includeemptydirs="true">
             <fileset dir="./">
                 <include name="${serv.environment}" />
@@ -19,7 +21,7 @@
         <mkdir dir="${serv.environment}" />   
         <mkdir dir="${serv.environment}sql" />   
     </target>
-     
+
     <target name="app-ini">
         <property name="production.db.host" value="${db.host}" />
         <property name="production.db.username" value="${db.user}" />
@@ -29,34 +31,36 @@
         <property name="testing.db.username" value="" />
         <property name="testing.db.password" value="" />
         <property name="testing.db.dbname" value="" />
-            <copy file="untar/source/application/configs/application.ini.example" 
-                  tofile="untar/source/application/configs/application.ini" overwrite="true">
-              <filterchain>
+        <copy file="untar/source/application/configs/application.ini.example" 
+            tofile="untar/source/application/configs/application.ini" overwrite="true">
+
+            <filterchain>
                 <expandproperties />
-              </filterchain>
-            </copy>
+            </filterchain>
+        </copy>
     </target>    
   
     <target name="copy" > 
         <exec command="cp -rf untar/source/* ${serv.environment}" checkreturn="true"/>
     </target>
-	
-	<target name="htaccess">
+
+    <target name="htaccess">
         <property name="domain-name" value="${domain.name}" />
         <copy file="untar/root-htaccess"
-              tofile=".htaccess" overwrite="true">
+            tofile=".htaccess" overwrite="true">
+            
             <filterchain>
                 <expandproperties />
             </filterchain>
         </copy>
-		<copy file="untar/public-htaccess"
-			  tofile="${serv.environment}/public/.htaccess" overwrite="true">
-		     <filterchain>
+        <copy file="untar/public-htaccess"
+            tofile="${serv.environment}/public/.htaccess" overwrite="true">
+                
+            <filterchain>
                 <expandproperties />
             </filterchain>
         </copy>
     </target>
-	
 
     <target name="chmod">
         <echo message="chmodding" />
@@ -66,7 +70,7 @@
         <echo msg="Preparing database" />
         <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.password}">
             <fileset dir="untar/deploy/sql/prepare/">
-              <include name="*.sql"/>
+                <include name="*.sql"/>
             </fileset>
         </pdosqlexec>
         <echo msg="Done preparing the database" />
@@ -99,6 +103,7 @@
         </pdosqlexec>
     </target>
     
+    <!-- cleanup files -->
     <target name="clear">
         <echo message="clearing" />
         <delete dir="untar/" />
