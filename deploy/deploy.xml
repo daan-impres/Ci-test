@@ -16,10 +16,10 @@
                 <include name="${serv.environment}" />
             </fileset>
         </delete>
-        <delete quiet="true" file=".htaccess" />
         <delete quiet="true" dir="${serv.environment}sql/" />
         <mkdir dir="${serv.environment}" />   
-        <mkdir dir="${serv.environment}sql" />   
+        <mkdir dir="${serv.environment}sql" />
+		<mkdir dir="deploy-data" />   
     </target>
 
     <target name="app-ini">
@@ -43,25 +43,7 @@
     <target name="copy" > 
         <exec command="cp -rf untar/source/* ${serv.environment}" checkreturn="true"/>
     </target>
-
-    <target name="htaccess">
-        <property name="domain-name" value="${domain.name}" />
-        <copy file="untar/root-htaccess"
-            tofile=".htaccess" overwrite="true">
-            
-            <filterchain>
-                <expandproperties />
-            </filterchain>
-        </copy>
-        <copy file="untar/public-htaccess"
-            tofile="${serv.environment}/public/.htaccess" overwrite="true">
-                
-            <filterchain>
-                <expandproperties />
-            </filterchain>
-        </copy>
-    </target>
-
+   
     <target name="chmod">
         <echo message="chmodding" />
     </target>
@@ -102,7 +84,52 @@
             </fileset>
         </pdosqlexec>
     </target>
-    
+	
+	<target name="begin-htaccess">
+		<echo file="tmp-htaccess" append="true">
+RewriteEngine On
+RewriteBase / </echo>
+	</target>
+	
+	<!-- build htacces from all propertie files found in deploy-data directory>-->
+	<target name="htaccess">
+		<copy file="untar/${serv.environment}.properties" tofile="deploy-data/${serv.environment}.properties" overwrite="true" />
+		 <foreach param="needed" absparam="absname" target="write-htaccess" >
+            <fileset dir="deploy-data/" >
+                <include name="*.properties" />
+            </files>
+        </foreach>  
+        <!--<property name="domain-name" value="${domain.name}" />
+        <copy file="untar/root-htaccess"
+            tofile=".htaccess" overwrite="true">
+            
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+        <copy file="untar/public-htaccess"
+            tofile="${serv.environment}/public/.htaccess" overwrite="true">
+                
+            <filterchain>
+                <expandproperties />
+            </filterchain>-->
+       <!-- <delete quiet="true" file=".htaccess" />-->
+    </target>
+
+	<!--htaccess foreach loop -->
+	<target name="output">
+        <property file="${absname}" />
+        <echo file="tmp-htaccess" append="true">
+
+RewriteCond %{HTTP_HOST} ^(www.)?${domein}$
+RewriteCond %{DOCUMENT_ROOT}/${environment}/ -d
+RewriteRule (.*) /production/public/$1 [NC,L]</echo>
+    </target>
+
+	<target name="write-htaccess">
+		<copy file="tmp-htaccess" tofile=".htaccess" overwrite="true" />		
+	</target>
+   
     <!-- cleanup files -->
     <target name="clear">
         <echo message="clearing" />
@@ -111,5 +138,5 @@
         <delete file="deploy.xml" />
     </target>
     
-	<target name="deploy" depends="untar, pre-clean, app-ini, copy, htaccess, chmod, dbprepare ,dbmigrate, clear" />
+	<target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbmigrate, begin-htaccess, htaccess, write-htaccess, clear" />
 </project>
