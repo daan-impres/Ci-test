@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Ci-test" default="build" basedir="../">
- 
+<project name="build" default="build" basedir="../">
+
+    <!-- Define database name for the testing database -->
+    <property name="db.name" value="${env.JOB_NAME}-${DSTAMP}${TSTAMP}-${db.name}" override="true" />
+
+
+    <!-- timestamp required for creating unique names -->
+    <tstamp />
 
  	<!-- Preparation create required directories -->
     <target name="prepare">
-        <echo msg="Making directory build" />
+        <echo msg="Creating directory build" />
         <mkdir dir="build" />
         <mkdir dir="build/log" />
         <mkdir dir="build/log/code-browser" />
         <mkdir dir="build/log/phpunit" />
         <mkdir dir="api" />
-	
-	<echo message="${env.GIT_BRANCH}" /> 
     </target>
+
 	<!-- Call build.properties for ci server db migration -->
 	<target name="configure">    
-    <property file="../build.properties" />
-        <tstamp />
+        <property file="/var/lib/jenkins/jobdata/build.properties" />
     </target>
 
     <!-- Run some tools on the sourcecode -->
@@ -37,12 +41,12 @@
     </target>
 
     <target name="phpcpd">
-    <phpcpd>
-        <fileset dir="source/application">
-            <include name="**/*.php" />
-        </fileset>
-        <formatter type="pmd" outfile="build/log/pmd-cpd.xml"/>
-    </phpcpd>
+        <phpcpd>
+            <fileset dir="source/application">
+                <include name="**/*.php" />
+            </fileset>
+            <formatter type="pmd" outfile="build/log/pmd-cpd.xml"/>
+        </phpcpd>
     </target>
 
     <target name="phpmd">
@@ -89,24 +93,24 @@
 		<property name="testing.db.password" value="${db.pass}" />
 		<property name="testing.db.dbname" value="${db.name}" />
 
-			<copy file="source/application/configs/application.ini.example" 
-				  tofile="source/application/configs/application.ini" overwrite="true">
-			  <filterchain>
-				<expandproperties />
-			  </filterchain>
-			</copy>
-					
-		<echo msg="wir haben jezt deinen application.ini gemacht fur sie.(das ist fur phpunit)" />
+        <copy file="source/application/configs/application.ini.example" 
+              tofile="source/application/configs/application.ini" overwrite="true">
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
 	</target>
+
 	<!-- DBmigrate for the PHPUnit task -->
 	<target name="dbprepare">
-	<echo msg="Preparing database" />
-        <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
-            <fileset dir="deploy/sql/prepare/">
-              <include name="*.sql"/>
-            </fileset>
-        </pdosqlexec>
-	<echo msg="Done preparing the database" />
+        <echo msg="${db.name}" />
+        <echo msg="Preparing database" />
+            <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
+                <fileset dir="deploy/sql/prepare/">
+                  <include name="*.sql"/>
+                </fileset>
+            </pdosqlexec>
+        <echo msg="Done preparing the database" />
     </target>
 
     <!-- create our migration task -->
@@ -134,13 +138,7 @@
         </pdosqlexec>
     </target>
 		
-	
-    <!-- PHPUnit task run unit tests (binary is called phpunit34 because an older version is required for Zend Framework) -->
-    <target name="phpunit">
-        <exec executable="phpunit34" dir="source/tests" passthru="true" >
-        </exec>
-    </target>
-	
+    <!-- Cleanup the files created by the build which aren't required anymore -->
 	<target name="post-cleanup">
 		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.pass}" src="deploy/sql/scripts/cleanup.sql" />
 		<echo message="Cleared the database" />
@@ -149,9 +147,10 @@
 			<fileset dir="deploy/sql/scripts">
 				<include name="undo*.sql" />
 				<include name="deploy*.sql" />
-			</fileset>
+		    </fileset>
 		</delete>
 	</target>
-    <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit, post-cleanup" /> 
+
+    <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, post-cleanup" /> 
 	<target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
