@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="build" default="build" basedir="../">
 
-    <!-- Define database name for the testing database -->
-    <property name="db.name" value="${env.JOB_NAME}-${DSTAMP}${TSTAMP}-${db.name}" override="true" />
-
-
-    <!-- timestamp required for creating unique names -->
-    <tstamp />
-
  	<!-- Preparation create required directories -->
     <target name="prepare">
         <echo msg="Creating directory build" />
@@ -20,6 +13,8 @@
 
 	<!-- Call build.properties for ci server db migration -->
 	<target name="configure">    
+        <tstamp />
+        <property name="db.name" value="${env.JOB_NAME}-${DSTAMP}${TSTAMP}-${db.name}" override="true" />
         <property file="/var/lib/jenkins/jobdata/build.properties" />
     </target>
 
@@ -103,7 +98,6 @@
 
 	<!-- DBmigrate for the PHPUnit task -->
 	<target name="dbprepare">
-        <echo msg="${db.name}" />
         <echo msg="Preparing database" />
             <pdosqlexec url="${db.driver}:host=${db.host}" userid="${db.user}" password="${db.pass}">
                 <fileset dir="deploy/sql/prepare/">
