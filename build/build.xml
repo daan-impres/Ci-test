@@ -131,6 +131,11 @@
 					password="${db.pass}" src="deploy/sql/scripts/deploy-${DSTAMP}${TSTAMP}.sql">
         </pdosqlexec>
     </target>
+
+    <!-- PHPUnit task run unit tests (binary is called phpunit34 because an older version is required for Zend Framework) -->
+    <target name="phpunit">
+        <exec executable="phpunit34" dir="source/tests" passthru="true" />
+    </target>
 		
     <!-- Cleanup the files created by the build which aren't required anymore -->
     <target name="post-cleanup">
@@ -145,6 +150,6 @@
         </delete>
     </target>
 
-    <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, post-cleanup" /> 
+    <target name="build" depends="prepare, docblox, codesniffer, phpcpd, phpmd, phpdepend, phploc, phpcb, dbdeploy, app-ini, phpunit ,post-cleanup" /> 
     <target name="dbdeploy" depends="configure, dbprepare, dbmigrate" />
 </project>
