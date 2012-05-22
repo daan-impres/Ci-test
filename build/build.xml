@@ -14,7 +14,7 @@
     <!-- Call build.properties for ci server db migration -->
     <target name="configure">    
         <tstamp />
-        <property file="/var/lib/jenkins/jobdata/build.properties" />
+        <property file="/var/lib/jenkins/jobdata/template-ZF/build.properties" />
         <property name="db.name" value="${env.JOB_NAME}-${DSTAMP}${TSTAMP}-${db.name}" override="true" />
     </target>
 
