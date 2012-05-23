@@ -46,7 +46,7 @@
 
     <target name="phpmd">
         <phpmd file="source/application"
-            rulesets="rule">
+            rulesets="codesize,design,unusedcode,naming">
             <formatter type="xml" outfile="build/log/pmd.xml" />
         </phpmd>
     </target>
