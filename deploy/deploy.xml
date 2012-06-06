@@ -107,7 +107,7 @@ RewriteBase /
                     <include name="*.properties" />
                 </fileset>
             </foreach>
-            <copy file="untar/public-htaccess"
+            <copy file="untar/htaccess.example"
                 tofile="${serv.environment}/public/.htaccess" overwrite="true">
 
             <filterchain>

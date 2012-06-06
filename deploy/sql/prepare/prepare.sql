@@ -13,3 +13,5 @@ CREATE TABLE IF NOT EXISTS `changelog` (
   `applied_by` VARCHAR(100) NOT NULL,
   `description` VARCHAR(500) NOT NULL
 );
+
+

@@ -1,3 +1,4 @@
 api/*
 build/log/*
 source/application/configs/application.ini
+source/public/.htaccess
