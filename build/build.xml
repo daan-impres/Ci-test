@@ -134,7 +134,7 @@
 
     <!-- PHPUnit task run unit tests (binary is called phpunit34 because an older version is required for Zend Framework) -->
     <target name="phpunit">
-        <exec executable="phpunit34 | sed -r 's/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g'" dir="source/tests" passthru="true" />
+        <exec executable="phpunit34 source/tests | sed -r 's/\x1B\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g'" passthru="true" />
     </target>
 		
     <!-- Cleanup the files created by the build which aren't required anymore -->
