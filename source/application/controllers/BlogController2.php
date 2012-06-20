@@ -1,6 +1,6 @@
 <?php
 
-class BlogController extends Zend_Controller_Action 
+class BlogController2 extends Zend_Controller_Action 
 {
     /**
      * index action fetches all available blogs from the database
