@@ -1,1 +1,1 @@
-SELECT max(jobname) FROM `changelog`
+SELECT max(jobnumber) FROM `changelog`
