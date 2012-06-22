@@ -88,10 +88,10 @@
 					userid="${db.user}" 
 					password="${db.password}" 
 					src="untar/deploy/sql/scripts/check-changelog.sql" >
-			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber" />
+			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" />
         </pdosqlexec>
 
-		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/scripts/max-jobnumber" />
+		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/scripts/max-jobnumber.txt" />
 	
 		<echo message="JOBNUMBER MAX == ${dbdeploy-jobnumber}" />
 	
