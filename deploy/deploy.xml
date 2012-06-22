@@ -96,7 +96,7 @@
 		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" 
 					userid="${db.user}" 
 					password="${db.password}" 
-					src="untar/deploy/sql/prepare/changelog-update.sql"
+					src="untar/deploy/sql/scripts/changelog-update.sql"
 		 />
 	</target>
 	
@@ -149,5 +149,5 @@ RewriteRule (.*) /${environment}/public/$1 [NC,L]
         <delete file="deploy.xml" />
     </target>
 
-    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbmigrate, begin-htaccess, htaccess, write-htaccess, clean" />
+    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbmigrate, dbdeploy-changelog, begin-htaccess, htaccess, write-htaccess, clean" />
 </project>
