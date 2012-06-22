@@ -100,6 +100,14 @@
 			</then>
 			<else>
 				<echo message="${dbdeploy-jobnumber} !== empty" />
+
+				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="needed">
+					<echo message="${needed} !== empty" />
+					<!--<fileset dir="deploy-data/" >
+						<include name="*.properties" />
+					</fileset>-->
+				</foreach>
+
 			</else>
 		</if>
 
