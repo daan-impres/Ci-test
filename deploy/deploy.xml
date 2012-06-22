@@ -90,7 +90,16 @@
             </fileset>
         </pdosqlexec>
     </target>
-
+	<!-- For a redeployment the changlog table needs to know wich undo has to be done for this build. -->
+	<target name="dbdeploy-changelog">
+		<echo msg="updating changelog table to allow redeployment" />
+		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" 
+					userid="${db.user}" 
+					password="${db.password}" 
+					src="untar/deploy/sql/prepare/changelog-update.sql"
+		 />
+	</target>
+	
     <target name="begin-htaccess">
         <echo file="tmp-htaccess" append="true">
 RewriteEngine On

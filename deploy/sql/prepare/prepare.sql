@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `changelog` (
   `start_dt` TIMESTAMP NOT NULL,
   `complete_dt` TIMESTAMP NULL,
   `applied_by` VARCHAR(100) NOT NULL,
-  `description` VARCHAR(500) NOT NULL
+  `description` VARCHAR(500) NOT NULL,
+  `jobnumber` INT(11) NOT NULL
 );
 
 
