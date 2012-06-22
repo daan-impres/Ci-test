@@ -1,6 +1,6 @@
-ALTER TABLE `blog`
+ALTER TABLE `deploytest`
 ADD `nametiedame` varchar(20);
 
 --//@UNDO
-ALTER TABLE `BLOG`
+ALTER TABLE `deploytest`
 DROP COLUMN `nametiedame`;
