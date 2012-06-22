@@ -65,12 +65,12 @@
     </target>
 
     <!-- create our migration task -->
-    <target name="dbmigrate" description="Database Migrations">
+    <target name="dbdeploy" description="Database Migrations">
         <echo msg="Running database migrations..." />
 
         <!-- these two filenames will contain the generated SQL to do the deploy and roll it back-->
-        <property name="build.dbdeploy.deployfile" value="deploy-${JOBNUMBER}${TSTAMP}.sql" />
-        <property name="build.dbdeploy.undofile" value="undo-${JOBNUMBER}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.deployfile" value="deploy-${JOBNUMBER}-${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="undo-${JOBNUMBER}-${TSTAMP}.sql" />
 
         <!-- generate the deployment scripts -->
         <dbdeploy
@@ -81,15 +81,39 @@
             dir="untar/deploy/sql/deltas"
             outputfile="${serv.environment}sql/${build.dbdeploy.deployfile}"
             undooutputfile="${serv.environment}sql/${build.dbdeploy.undofile}" />
+    </target>
+    
+	<target name="dbdeploy-check-changelog">
+		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}" file="untar/deploy/sql/scripts/check-changelog.sql">
+			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber" />
+        </pdosqlexec>
 
-        <!-- insert the deployment scripts -->
+		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/scripts/max-jobnumber" />
+	
+		<echo message="JOBNUMBER MAX == ${dbdeploy-jobnumber}" />
+	
+	</target>
+    <!-- insert the deployment scripts -->
+	<target name="dbdeploy-insert">
         <echo msg="migrating new sql" />
         <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
             <fileset dir="${serv.environment}sql/">
                 <include name="deploy-*.sql" />
             </fileset>
         </pdosqlexec>
-    </target>
+	</target>
+
+	<!-- undo the deployment scripts (in case of a redeployment) -->
+	<target name="dbdeploy-undo">
+        <echo msg="migrating new sql" />
+        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
+            <fileset dir="${serv.environment}sql/">
+                <include name="undo-*.sql" />
+            </fileset>
+        </pdosqlexec>
+	</target>
+	
+
 	<!-- For a redeployment the changlog table needs to know wich undo has to be done for this build. -->
 	<target name="dbdeploy-changelog">
 		<echo msg="updating changelog table to allow redeployment" />
@@ -149,5 +173,5 @@ RewriteRule (.*) /${environment}/public/$1 [NC,L]
         <delete file="deploy.xml" />
     </target>
 
-    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbmigrate, dbdeploy-changelog, begin-htaccess, htaccess, write-htaccess, clean" />
+    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbdeploy, dbdeploy-check-changelog, dbdeploy-changelog, begin-htaccess, htaccess, write-htaccess, clean" />
 </project>
