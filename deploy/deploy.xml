@@ -13,11 +13,11 @@
     <!-- Clean the directory before deploying -->
     <target name="pre-clean">
         <property file="untar/deploy.properties" />
-        <delete quiet="true" includeemptydirs="true">
+        <!--<delete quiet="true" includeemptydirs="true">
             <fileset dir="./">
                 <include name="${serv.environment}" />
             </fileset>
-        </delete>
+        </delete>-->
         <delete quiet="true" dir="${serv.environment}sql/" />
         <mkdir dir="${serv.environment}" />
         <mkdir dir="${serv.environment}sql" />
@@ -97,15 +97,17 @@
 			<equals arg1="${dbdeploy-jobnumber}" arg2="" />
 			<then>
 				<echo message="${dbdeploy-jobnumber} == empty" />
+				<!-- insert the deployment scripts -->
+				<echo msg="migrating new sql" />
+				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
+					<fileset dir="${serv.environment}sql/">
+						<include name="deploy-*.sql" />
+					</fileset>
+				</pdosqlexec>
 			</then>
 			<else>
 				<echo message="${dbdeploy-jobnumber} !== empty" />
-
-				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="needed" target="echo-task">
-					<!--<fileset dir="deploy-data/" >
-						<include name="*.properties" />
-					</fileset>-->
-				</foreach>
+				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="undo-number" target="echo-task" />
 
 			</else>
 		</if>
@@ -113,30 +115,22 @@
 	</target>
 
 	<target name="echo-task">
-		<echo message="${needed} !== empty" />
+		<if>
+			<not>
+				<equals arg1="${undo-number}" arg2="">
+			</not>
+			<then>
+				<!-- undo the deployment scripts (in case of a redeployment) -->
+        		<echo msg="undoing sql change with the name undo-${undo-number}-DATE.sql" />
+				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
+            		<fileset dir="${serv.environment}sql/">
+                		<include name="undo-${undo-number}*.sql" />
+           			</fileset>
+        		</pdosqlexec>
+			</then>
+		</if>
 	</target>
 	
-    <!-- insert the deployment scripts -->
-	<target name="dbdeploy-insert">
-        <echo msg="migrating new sql" />
-        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
-            <fileset dir="${serv.environment}sql/">
-                <include name="deploy-*.sql" />
-            </fileset>
-        </pdosqlexec>
-	</target>
-
-	<!-- undo the deployment scripts (in case of a redeployment) -->
-	<target name="dbdeploy-undo">
-        <echo msg="migrating new sql" />
-        <pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
-            <fileset dir="${serv.environment}sql/">
-                <include name="undo-*.sql" />
-            </fileset>
-        </pdosqlexec>
-	</target>
-	
-
 	<!-- For a redeployment the changlog table needs to know wich undo has to be done for this build. -->
 	<target name="dbdeploy-changelog">
 		<echo msg="updating changelog table to allow redeployment" />
