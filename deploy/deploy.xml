@@ -90,11 +90,11 @@
 					src="untar/deploy/sql/scripts/check-changelog.sql" >
 			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" coldelim="," showheaders="false" />
         </pdosqlexec>
-
 		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/sql/scripts/max-jobnumber.txt" />
-	
-		<echo message="JOBNUMBER MAX == ${dbdeploy-jobnumber}" />
-	
+
+		<echo message="${dbdeploy-jobnumber}" />
+		<if>
+
 	</target>
     <!-- insert the deployment scripts -->
 	<target name="dbdeploy-insert">
