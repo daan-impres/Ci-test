@@ -101,8 +101,7 @@
 			<else>
 				<echo message="${dbdeploy-jobnumber} !== empty" />
 
-				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="needed">
-					<echo message="${needed} !== empty" />
+				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="needed" target="echo-task">
 					<!--<fileset dir="deploy-data/" >
 						<include name="*.properties" />
 					</fileset>-->
@@ -112,6 +111,11 @@
 		</if>
 
 	</target>
+
+	<target name="echo-task">
+		<echo message="${needed} !== empty" />
+	</target>
+	
     <!-- insert the deployment scripts -->
 	<target name="dbdeploy-insert">
         <echo msg="migrating new sql" />
