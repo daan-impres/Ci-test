@@ -88,7 +88,7 @@
 					userid="${db.user}" 
 					password="${db.password}" 
 					src="untar/deploy/sql/scripts/check-changelog.sql" >
-			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" showheaders="false" />
+			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" coldelim="," showheaders="false" />
         </pdosqlexec>
 
 		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/sql/scripts/max-jobnumber.txt" />
