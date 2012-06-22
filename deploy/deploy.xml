@@ -84,7 +84,10 @@
     </target>
     
 	<target name="dbdeploy-check-changelog">
-		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}" file="untar/deploy/sql/scripts/check-changelog.sql">
+		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" 
+					userid="${db.user}" 
+					password="${db.password}" 
+					src="untar/deploy/sql/scripts/check-changelog.sql" >
 			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber" />
         </pdosqlexec>
 
