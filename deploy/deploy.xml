@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="deploy" default="deploy" basedir="">
 
-
     <!-- Timestamp for db migration tasks -->
     <tstamp />
 
@@ -70,8 +69,8 @@
         <echo msg="Running database migrations..." />
 
         <!-- these two filenames will contain the generated SQL to do the deploy and roll it back-->
-        <property name="build.dbdeploy.deployfile" value="deploy-${DSTAMP}${TSTAMP}.sql" />
-        <property name="build.dbdeploy.undofile" value="undo-${DSTAMP}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.deployfile" value="deploy-${JOBNUMBER}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="undo-${JOBNUMBER}${TSTAMP}.sql" />
 
         <!-- generate the deployment scripts -->
         <dbdeploy
