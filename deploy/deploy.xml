@@ -93,6 +93,15 @@
 		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/sql/scripts/max-jobnumber.txt" />
 
 		<echo message="${dbdeploy-jobnumber}" />
+		<if>
+			<equals arg1="${dbdeploy-jobnumber}" arg2="" />
+			<then>
+				<echo message="${dbdeploy-jobnumber} == empty" />
+			</then>
+			<else>
+				<echo message="${dbdeploy-jobnumber} !== empty" />
+			</else>
+		</if>
 
 	</target>
     <!-- insert the deployment scripts -->
