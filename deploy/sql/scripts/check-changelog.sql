@@ -1,1 +1,1 @@
-SELECT max(jobnumber) FROM `changelog`
+SELECT max(jobnumber) AS '' FROM `changelog`
