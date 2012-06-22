@@ -13,12 +13,12 @@
     <!-- Clean the directory before deploying -->
     <target name="pre-clean">
         <property file="untar/deploy.properties" />
-        <!--<delete quiet="true" includeemptydirs="true">
+        <delete quiet="true" includeemptydirs="true">
             <fileset dir="./">
                 <include name="${serv.environment}" />
             </fileset>
-        </delete>-->
-        <delete quiet="true" dir="${serv.environment}sql/" />
+        </delete>
+        <!--<delete quiet="true" dir="${serv.environment}sql/" />-->
         <mkdir dir="${serv.environment}" />
         <mkdir dir="${serv.environment}sql" />
         <mkdir dir="deploy-data" />
