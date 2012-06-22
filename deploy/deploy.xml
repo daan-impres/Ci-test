@@ -117,7 +117,7 @@
 	<target name="echo-task">
 		<if>
 			<not>
-				<equals arg1="${undo-number}" arg2="">
+				<equals arg1="${undo-number}" arg2="" />
 			</not>
 			<then>
 				<!-- undo the deployment scripts (in case of a redeployment) -->
