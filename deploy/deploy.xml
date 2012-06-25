@@ -101,7 +101,7 @@
 				<echo msg="migrating new sql" />
 				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
 					<fileset dir="${serv.environment}sql/">
-						<include name="deploy-${dbdeploy-jobnumber}*.sql" />
+						<include name="deploy-${JOBNUMBER}*.sql" />
 					</fileset>
 				</pdosqlexec>
 			</then>
