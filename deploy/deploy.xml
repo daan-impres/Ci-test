@@ -190,5 +190,5 @@ RewriteRule (.*) /${environment}/public/$1 [NC,L]
         <delete file="deploy.xml" />
     </target>
 
-    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbdeploy, dbdeploy-check-changelog, dbdeploy-changelog, begin-htaccess, htaccess, write-htaccess, clean" />
+    <target name="deploy" depends="untar, pre-clean, app-ini, copy, chmod, dbprepare ,dbdeploy, dbdeploy-check-changelog, dbdeploy-changelog, begin-htaccess, htaccess, write-htaccess" />
 </project>
