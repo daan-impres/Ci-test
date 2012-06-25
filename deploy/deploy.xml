@@ -77,8 +77,6 @@
 		<if>
 			<equals arg1="${dbdeploy-jobnumber}" arg2="" />
 			<then>
-				<echo message="${dbdeploy-jobnumber} == empty" />
-	
 				<phingcall target="dbdeploy" />
 				<!-- insert the deployment scripts -->
 				<echo msg="migrating new sql" />
@@ -89,8 +87,7 @@
 				</pdosqlexec>
 			</then>
 			<else>
-				<echo message="${dbdeploy-jobnumber} !== empty" />
-				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="undo-number" target="echo-task" />
+				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="undo-number" target="undo-task" />
 			</else>
 		</if>
 
@@ -115,14 +112,14 @@
             undooutputfile="${serv.environment}sql/${build.dbdeploy.undofile}" />
     </target>
 
-	<target name="echo-task">
+	<target name="undo-task">
 		<if>
 			<not>
 				<equals arg1="${undo-number}" arg2="" />
 			</not>
 			<then>
 				<!-- undo the deployment scripts (in case of a redeployment) -->
-        		<echo msg="undoing sql change with the name undo-${undo-number}-DATE.sql" />
+        		<echo msg="undoing sql change with the name undo-${undo-number}-'time'.sql" />
 				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
             		<fileset dir="${serv.environment}sql/">
                 		<include name="undo-${undo-number}*.sql" />
