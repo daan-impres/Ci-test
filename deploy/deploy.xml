@@ -63,8 +63,40 @@
         </pdosqlexec>
         <echo msg="Done preparing the database" />
     </target>
+   
+	<target name="dbdeploy-check-changelog">
+		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" 
+					userid="${db.user}" 
+					password="${db.password}" 
+					src="untar/deploy/sql/scripts/check-changelog.sql" >
+			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" rowdelim="," showheaders="false" />
+        </pdosqlexec>
+		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/sql/scripts/max-jobnumber.txt" />
 
-    <!-- create our migration task -->
+		<echo message="${dbdeploy-jobnumber}" />
+		<if>
+			<equals arg1="${dbdeploy-jobnumber}" arg2="" />
+			<then>
+				<echo message="${dbdeploy-jobnumber} == empty" />
+	
+				<phingcall target="dbdeploy" />
+				<!-- insert the deployment scripts -->
+				<echo msg="migrating new sql" />
+				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
+					<fileset dir="${serv.environment}sql/">
+						<include name="deploy-${JOBNUMBER}*.sql" />
+					</fileset>
+				</pdosqlexec>
+			</then>
+			<else>
+				<echo message="${dbdeploy-jobnumber} !== empty" />
+				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="undo-number" target="echo-task" />
+			</else>
+		</if>
+
+	</target>
+	
+	 <!-- create our migration task -->
     <target name="dbdeploy" description="Database Migrations">
         <echo msg="Running database migrations..." />
 
@@ -82,37 +114,6 @@
             outputfile="${serv.environment}sql/${build.dbdeploy.deployfile}"
             undooutputfile="${serv.environment}sql/${build.dbdeploy.undofile}" />
     </target>
-    
-	<target name="dbdeploy-check-changelog">
-		<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" 
-					userid="${db.user}" 
-					password="${db.password}" 
-					src="untar/deploy/sql/scripts/check-changelog.sql" >
-			<formatter type="plain" outfile="untar/deploy/sql/scripts/max-jobnumber.txt" rowdelim="," showheaders="false" />
-        </pdosqlexec>
-		<loadfile property= "dbdeploy-jobnumber" file="untar/deploy/sql/scripts/max-jobnumber.txt" />
-
-		<echo message="${dbdeploy-jobnumber}" />
-		<if>
-			<equals arg1="${dbdeploy-jobnumber}" arg2="" />
-			<then>
-				<echo message="${dbdeploy-jobnumber} == empty" />
-				<!-- insert the deployment scripts -->
-				<echo msg="migrating new sql" />
-				<pdosqlexec url="${db.driver}:host=localhost;dbname=${db.name}" userid="${db.user}" password="${db.password}">
-					<fileset dir="${serv.environment}sql/">
-						<include name="deploy-${JOBNUMBER}*.sql" />
-					</fileset>
-				</pdosqlexec>
-			</then>
-			<else>
-				<echo message="${dbdeploy-jobnumber} !== empty" />
-				<foreach list="${dbdeploy-jobnumber}" delimiter="," param="undo-number" target="echo-task" />
-
-			</else>
-		</if>
-
-	</target>
 
 	<target name="echo-task">
 		<if>
